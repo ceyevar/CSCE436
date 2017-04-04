@@ -1,7 +1,7 @@
 # CSCE 436 - Group Project - Stanley's Stats
 
 ## Project Summary
-lorem ipsum
+A team project for CSCE 436 at Texas A&M University. Details of the project can be found under documentation. 
 
 ## Members
 Cory Avra<br>
