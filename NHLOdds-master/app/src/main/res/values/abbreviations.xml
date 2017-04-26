@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="abbreviations">
+        <item>ANA</item>
+        <item>PHX</item>
+        <item>BOS</item>
+        <item>BUF</item>
+        <item>CGY</item>
+        <item>CAR</item>
+        <item>CHI</item>
+        <item>COL</item>
+        <item>CBJ</item>
+        <item>DAL</item>
+        <item>DET</item>
+        <item>EDM</item>
+        <item>FLA</item>
+        <item>LAK</item>
+        <item>MIN</item>
+        <item>MTL</item>
+        <item>NSH</item>
+        <item>NJD</item>
+        <item>NYI</item>
+        <item>NYR</item>
+        <item>OTT</item>
+        <item>PHI</item>
+        <item>PIT</item>
+        <item>STL</item>
+        <item>SJS</item>
+        <item>TBL</item>
+        <item>TOR</item>
+        <item>VAN</item>
+        <item>WSH</item>
+        <item>WPG</item>
+    </string-array>
+</resources>
