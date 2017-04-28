@@ -1,5 +1,5 @@
-#scrapy crawl nhl -a usr=root -a pwd=PASSWORD
-#curl http://localhost:6800/schedule.json -d project=nhlscraper -d spider=nhl -d usr=root -d pwd=PASSWORD
+#scrapy crawl nhl -a usr=USER -a pwd=PASSWORD
+#curl http://localhost:6800/schedule.json -d project=nhlscraper -d spider=nhl -d usr=USER -d pwd=PASSWORD
 from decimal import *
 import pymysql
 import sys
