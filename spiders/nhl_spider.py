@@ -1,5 +1,5 @@
-#scrapy crawl nhl -a usr=root -a pwd=PASSWORD
-#curl http://localhost:6800/schedule.json -d project=nhlscraper -d spider=nhl -d usr=root -d pwd=PASSWORD
+#scrapy crawl nhl -a usr=USER -a pwd=PASSWORD
+#curl http://localhost:6800/schedule.json -d project=nhlscraper -d spider=nhl -d usr=USER -d pwd=!PASSWORD 
 from decimal import *
 import pymysql
 import sys
@@ -136,8 +136,14 @@ class LoginSpider(Spider):
 			#Initial insert for Eastern and Metropolitan
 			while i < len(driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']").find_elements_by_tag_name('tr')):
 				teamrank = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[1]").get_attribute('innerHTML')
-				teamname = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
-				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[4]").get_attribute('innerHTML')
+				teamname = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[2]").get_attribute('innerHTML')
+				if ("p-"== teamname[:2] or "x-" == teamname[:2] or "y-" == teamname[:2] or "z-" == teamname[:2]):
+					teamname = teamname[2:]
+				print teamname
+				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
+				if ("p-"== teamnameabbr[:2] or "x-" == teamnameabbr[:2] or "y-" == teamnameabbr[:2] or "z-" == teamnameabbr[:2]):
+					teamnameabbr = teamnameabbr[2:]
+				print teamnameabbr
 				gamesplayed = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(2)+ "]/span").get_attribute('innerHTML')
 				wins = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(3)+ "]/span").get_attribute('innerHTML')
 				losses = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(4)+ "]/span").get_attribute('innerHTML')
@@ -156,8 +162,11 @@ class LoginSpider(Spider):
 				lastten = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(14)+ "]/span").get_attribute('innerHTML')
 				streak = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(15)+ "]/span").get_attribute('innerHTML')
 				lastgame = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(16)+ "]/span/a").get_attribute('innerHTML')
-				nextgame = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
-
+				poop = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span").get_attribute('innerHTML')
+				if(poop != ""):
+					nextgame = driver.find_element_by_xpath("//div[@id='division-division-18']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
+				else:
+					nextgame = ""
 				teamdivision = "NA"
 				teamconference = "NA"
 				
@@ -191,8 +200,14 @@ class LoginSpider(Spider):
 			#Initial insert for Eastern and Atlantic
 			while i < len(driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']").find_elements_by_tag_name('tr')):
 				teamrank = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[1]").get_attribute('innerHTML')
-				teamname = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
-				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[4]").get_attribute('innerHTML')
+				teamname = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[2]").get_attribute('innerHTML')
+				if ("p-"== teamname[:2] or "x-" == teamname[:2] or "y-" == teamname[:2] or "z-" == teamname[:2]):
+					teamname = teamname[2:]
+				print teamname
+				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
+				if ("p-"== teamnameabbr[:2] or "x-" == teamnameabbr[:2] or "y-" == teamnameabbr[:2] or "z-" == teamnameabbr[:2]):
+					teamnameabbr = teamnameabbr[2:]
+				print teamnameabbr
 				gamesplayed = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(2)+ "]/span").get_attribute('innerHTML')
 				wins = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(3)+ "]/span").get_attribute('innerHTML')
 				losses = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(4)+ "]/span").get_attribute('innerHTML')
@@ -211,8 +226,11 @@ class LoginSpider(Spider):
 				lastten = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(14)+ "]/span").get_attribute('innerHTML')
 				streak = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(15)+ "]/span").get_attribute('innerHTML')
 				lastgame = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(16)+ "]/span/a").get_attribute('innerHTML')
-				nextgame = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
-
+				poop = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span").get_attribute('innerHTML')
+				if(poop != ""):
+					nextgame = driver.find_element_by_xpath("//div[@id='division-division-17']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
+				else:
+					nextgame = ""
 				teamdivision = "NA"
 				teamconference = "NA"
 				
@@ -246,8 +264,14 @@ class LoginSpider(Spider):
 			#Initial insert for Western and Central
 			while i < len(driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']").find_elements_by_tag_name('tr')):
 				teamrank = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[1]").get_attribute('innerHTML')
-				teamname = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
-				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[4]").get_attribute('innerHTML')
+				teamname = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[2]").get_attribute('innerHTML')
+				if ("p-"== teamname[:2] or "x-" == teamname[:2] or "y-" == teamname[:2] or "z-" == teamname[:2]):
+					teamname = teamname[2:]
+				print teamname
+				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
+				if ("p-"== teamnameabbr[:2] or "x-" == teamnameabbr[:2] or "y-" == teamnameabbr[:2] or "z-" == teamnameabbr[:2]):
+					teamnameabbr = teamnameabbr[2:]
+				print teamnameabbr
 				gamesplayed = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(2)+ "]/span").get_attribute('innerHTML')
 				wins = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(3)+ "]/span").get_attribute('innerHTML')
 				losses = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(4)+ "]/span").get_attribute('innerHTML')
@@ -266,8 +290,11 @@ class LoginSpider(Spider):
 				lastten = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(14)+ "]/span").get_attribute('innerHTML')
 				streak = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(15)+ "]/span").get_attribute('innerHTML')
 				lastgame = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(16)+ "]/span/a").get_attribute('innerHTML')
-				nextgame = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
-
+				poop = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span").get_attribute('innerHTML')
+				if(poop != ""):
+					nextgame = driver.find_element_by_xpath("//div[@id='division-division-16']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
+				else:
+					nextgame = ""
 				teamdivision = "NA"
 				teamconference = "NA"
 				
@@ -304,8 +331,14 @@ class LoginSpider(Spider):
 			#Initial insert for Western and Pacific
 			while i < len(driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']").find_elements_by_tag_name('tr')):
 				teamrank = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[1]").get_attribute('innerHTML')
-				teamname = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
-				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[4]").get_attribute('innerHTML')
+				teamname = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[2]").get_attribute('innerHTML')
+				if ("p-"== teamname[:2] or "x-" == teamname[:2] or "y-" == teamname[:2] or "z-" == teamname[:2]):
+					teamname = teamname[2:]
+				print teamname
+				teamnameabbr = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(1)+ "]/span/a/span[3]").get_attribute('innerHTML')
+				if ("p-"== teamnameabbr[:2] or "x-" == teamnameabbr[:2] or "y-" == teamnameabbr[:2] or "z-" == teamnameabbr[:2]):
+					teamnameabbr = teamnameabbr[2:]
+				print teamnameabbr
 				gamesplayed = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(2)+ "]/span").get_attribute('innerHTML')
 				wins = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(3)+ "]/span").get_attribute('innerHTML')
 				losses = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(4)+ "]/span").get_attribute('innerHTML')
@@ -324,8 +357,11 @@ class LoginSpider(Spider):
 				lastten = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(14)+ "]/span").get_attribute('innerHTML')
 				streak = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(15)+ "]/span").get_attribute('innerHTML')
 				lastgame = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(16)+ "]/span/a").get_attribute('innerHTML')
-				nextgame = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
-
+				poop = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span").get_attribute('innerHTML')
+				if(poop != ""):
+					nextgame = driver.find_element_by_xpath("//div[@id='division-division-15']/div/div/div[@class='responsive-datatable__pinned']/table/tbody/tr[" +str(i)+ "]/td[" +str(17)+ "]/span/a").get_attribute('innerHTML')
+				else:
+					nextgame = ""
 				teamdivision = "NA"
 				teamconference = "NA"
 				
